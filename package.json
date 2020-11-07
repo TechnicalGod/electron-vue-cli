@@ -1,19 +1,45 @@
 {
   "name": "finance-pc",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "main": "./electron/main.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "start": "concurrently \"vue-cli-service serve\" \"wait-on http://localhost:8080 && electron .\" ",
+    "build:vue": "vue-cli-service build",
+    "build": "concurrently \"vue-cli-service build\" \"npm run dist\" ",
+    "lint": "vue-cli-service lint",
+    "packager": "electron-packager ./ VEA_L --platform=win32 --arch=x64 --electron-version=2.0.0 --overwrite",
+    "distWin": "electron-builder --win --x64",
+    "distMac": "electron-builder --mac --x64",
+    "dist": "concurrently \"electron-builder --mac --x64\" \"electron-builder --win --x64\" "
+  },
+  "build": {
+    "appId": "com.xxx.app",
+    "copyright": "LEON",
+    "productName": "财务转账记录上传程序",
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    }
   },
   "dependencies": {
+    "ant-design-vue": "^1.7.2",
+    "concurrently": "^5.1.0",
     "core-js": "^3.6.5",
+    "electron-is-dev": "^1.1.0",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "vuex-vx": "^1.1.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -21,9 +47,14 @@
     "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "concurrently": "^5.1.0",
+    "electron": "^10.1.4",
+    "electron-builder": "^22.9.1",
+    "electron-is-dev": "^1.1.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "wait-on": "^4.0.0"
   }
 }
